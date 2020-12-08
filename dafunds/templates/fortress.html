@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="collapse" id="001">
+        <div class="bg-dark p-4">
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                <div class="input-group mb-3">
+                    {{ form.code.label(class="input-group-text") }}
+                    {% if form.code.errors %}
+                        {{ form.code(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.code.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                    {% else %}
+                        {{ form.code(class="form-control") }}
+                    {% endif %}
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Base Vault</label>
+                    </div>
+                    <select class="custom-select" name="vault_name_opt" id="inputGroupSelect01">
+                        <option value="0" selected>None</option>
+                        {% for vault in vaults %}
+                            <option value="{{vault.id}}" >{{vault.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="d-flex justify-content-end">
+                    {{ form.submit(class="btn btn-light btn-outline-dark") }}
+                </div>
+            </form>
+        </div>
+    </div>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="d-flex w-100 justify-content-between">
+            <h3 class="text-white mt-1" >Underground</h3>
+            <button class="navbar-toggler btn-secondary btn-md mt-1" type="button" data-toggle="collapse" data-target="#001" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="text-white h5">+</span>
+            </button>
+        </div>
+    </nav>
+    <div class="list-group">
+        {% for vault in vaults %}
+            {% set treasury = vault.treasury %}
+            {% if vault.treasury_id != 0 %}
+            <a href="{{ url_for('fortress.treasury',treasury_id=treasury.id) }}" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ treasury.code }}</h5>
+                    <p>₹{{treasury.intreasury+treasury.incirculation}}</p>
+                </div>
+                <p class="mb-1">No of Vaults : {{treasury.vaults|length}}</p>
+                <p class="mb-1">Cash InCirculation : {{"False" if treasury.active == 0 else "True"}}</p>
+            </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock content %} 
