@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="jumbotron">
+        <div class="d-flex w-100 justify-content-between">
+            <h1 class="h1">Payment Settings</h1>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="d-flex w-100 justify-content-between">
+            <h3 class="text-white" >Transactions</h3>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#002" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+      
+    <div class="collapse show" id="002">
+          <div class="list-group">
+                  {% for tran in transacts %}
+                    <li class="text-white list-group-item list-group-item-action bg-{{ tran.stat_types[tran.tran_stat]['color'] }}">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1 text-white">Status : {{ tran.stat_types[tran.tran_stat]['value'] }}</h5>
+                            <p>{{tran.tran_date.strftime("%b %d %X, %Y ")}}</p>
+                        </div>
+                        <p class="mb-1">Amount : ₹{{ tran.amount }} Type : {{ tran.tran_type }}</p>
+                        <small>Remark : {{tran.remark[:20]}}</small>
+                        <div class="bg-info">
+                            <p class="mb-1">User : {{ tran.vault.user.username }} , Vault : {{ tran.vault.name }}</p>
+                            <p class="mb-1">Email : {{ tran.vault.user.email }}
+                         </div>
+                        <div class="d-flex justify-content-end btn-group">
+                                <form action="{{ url_for('transactions.transact_cntl',tran_stat='ST01',tran_id=tran.id) }}" method="POST">
+                                    <input class="btn btn-success btn-sm" type="submit" value="Success">
+                                </form>
+                                <form action="{{ url_for('transactions.transact_cntl',tran_stat='ST02',tran_id=tran.id) }}" method="POST">
+                                    <input class="btn btn-danger btn-sm" type="submit" value="Failure">
+                                </form>
+       
+                        </div>
+                    </li>
+                  {% endfor %}
+          </div>
+          <hr class="my-3">
+    </div>
+
+{% endblock content %}
