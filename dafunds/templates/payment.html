@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}       
+      <center>
+         <h1>Please do not refresh this page...</h1>
+      </center>
+      <form method="post" action="https://securegw-stage.paytm.in/theia/api/v1/showPaymentPage?mid={{ paydict['tmid'] }}&orderId={{ paydict['torderId'] }}" name="paytm">
+         <table border="1">
+            <tbody>
+               {% for key,val in paydict.items()  %}
+               <input type="hidden" name={{ key[1:] }} value={{ val }}>
+               {% endfor %}
+            </tbody>
+         </table>
+         <script type="text/javascript"> document.paytm.submit(); </script>
+      </form>
+   
+{% endblock content %} 
