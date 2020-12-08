@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="jumbotron">
+        <form method="POST" action="">
+        {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+                    <legend class="h1">Details</legend>
+                    <hr class="my-4">
+                    <div class="form-group">
+                        {{ form.amount.label(class="form-control-label h3") }}
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend btn-group btn-group-toggle" data-toggle="buttons">
+                                <button class="btn btn-outline-success ">
+                                    <input type="radio" name="tran_type_opt" value="CR" autocomplete="off" checked> Credit
+                                </button>
+                                <button class="btn btn-outline-danger">
+                                    <input type="radio" name="tran_type_opt" value="DB" autocomplete="off"> Debit
+                                </button>
+                            </div>
+                            {% if form.amount.errors %}
+                                {{ form.amount(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.amount.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.amount(class="form-control form-control-lg ") }}
+                            {% endif %}
+                        <div class="input-group mt-4">
+                            {{ form.remark.label(class="input-group-prepend input-group-text") }}
+                            {% if form.remark.errors %}
+                                {{ form.remark(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.remark.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.remark(class="form-control form-control-lg ") }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-info") }}
+                </div>
+        </form>
+    </div>
+
+{% endblock content %} 
