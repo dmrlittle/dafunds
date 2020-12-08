@@ -49,7 +49,7 @@ class Vault(db.Model):
     incirculation=db.Column(db.Float,nullable=False,default=0.0)
     lock=db.Column(db.Boolean,nullable=False,default=False)
     user_id=db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
-    treasury_id=db.Column(db.Integer,db.ForeignKey('treasury.id'),nullable=False,default=0)
+    treasury_id=db.Column(db.Integer,db.ForeignKey('treasury.id'))
     treasury=db.relationship('Treasury',backref='vaults')
     transactions=db.relationship('Transactions',backref='vault')
 
