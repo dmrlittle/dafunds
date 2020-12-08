@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content %} 
+    <div class="jumbotron">
+        <div class="d-flex w-100 justify-content-between">
+        <h1 class="h1">{{treasury.code.upper()}}</h1>
+            <a href="#" class="btn btn-danger mt-2 mb-2" role="button" data-toggle="modal" data-target="#003" aria-pressed="true">Leave</a>
+        </div>
+        
+        <hr class="my-3">
+        <p class="h5">Pool investment : ₹{{treasury.intreasury+treasury.incirculation}}</p>
+        <div class="progress">
+        {% for vault in treasury.vaults %}
+            {% set percent = ((vault.invault+vault.incirculation)*100/(treasury.intreasury+treasury.incirculation) if (treasury.intreasury+treasury.incirculation)!=0 else 0) %}    
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" 
+                     style="width: {{ percent }}%" 
+                     aria-valuemin="0" aria-valuemax="100">{{vault.name}} {{ percent }}%</div>
+        {% endfor %}
+        </div>
+        {% for vault in treasury.vaults %}
+            <p class="h6 ml-5">{{vault.name.title()}} : ₹{{vault.incirculation+vault.invault}}</p>
+        {% endfor %}
+        
+        {% for vault in treasury.vaults %}
+        {% if vault.user == current_user %}
+        <div class="d-flex flex-row-reverse">
+            <a href="{{ url_for('bunker.vault',vault_id=vault.id)}}" class="btn btn-primary " role="button" aria-pressed="true">Visit {{ vault.name }}</a>
+        </div>
+        {% endif %}
+        {% endfor %}
+       
+    </div>
+{% endblock %}
